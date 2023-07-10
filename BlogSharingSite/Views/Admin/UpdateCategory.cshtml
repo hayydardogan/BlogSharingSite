@@ -1,0 +1,117 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Categories
+@{
+    ViewBag.Title = "Kategori Bilgisi Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">KATEGORİ GÜNCELLE</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+            <fieldset>
+                <div class="form-field">
+                    @*@Html.TextBoxFor(m => m.categoryID, new { @class = "full-width", style = "display:none;" })*@
+                    <input value="@Model.categoryID" style="display:none" id="ctgID"/>
+                </div>
+                <div class="form-field">
+                    <span>Kategori Adı</span>
+                    @Html.TextBoxFor(m => m.categoryTitle, new { @class = "full-width", placeholder = "Kategori adı", @required = "required", @maxlength = "50", id = "categoryTitle" })
+                    
+                </div>
+                <button id="updateCtg" class="btn btn--primary btn-wide btn--large full-width">KATEGORİYİ GÜNCELLE</button>
+            </fieldset>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $("#updateCtg").click(function () {
+        let c = {
+            categoryID: $("#ctgID").val(),
+            categoryTitle: $('#categoryTitle').val()
+        };
+
+        if (c.categoryTitle.length < 3) {
+            Toastify({
+                text: "Kategori adı en az 3 karakterden oluşmalıdır.",
+                duration: 3500,
+                avatar: "/Images/warning.png",
+                style: {
+                    background: "white",
+                    color: "#ffc44c"
+                },
+                offset: {
+                    x: 50,
+                    y: 10
+                }
+            }).showToast();
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/UpdateCategory/",
+                data: c,
+                success: function (result) {
+                    if (result == "ok") {
+                        $("#categoryTitle").val("");
+                        Toastify({
+                            text: "Kategori adı güncellendi.",
+                            duration: 3500,
+                            avatar: "/Images/success.png",
+                            style: {
+                                background: "white",
+                                color: "#40b454"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+
+                    }
+                    else if (result == "already") {
+                        Toastify({
+                            text: c.categoryTitle + " adlı kategori zaten kayıtlı.",
+                            duration: 3500,
+                            avatar: "/Images/warning.png",
+                            style: {
+                                background: "white",
+                                color: "#ffc44c"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+                    }
+                    else {
+                        Toastify({
+                            text: " Beklenmeyen bir hata oluştu.",
+                            duration: 3500,
+                            avatar: "/Images/cancel.png",
+                            style: {
+                                background: "white",
+                                color: "#e84c4c"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+
+

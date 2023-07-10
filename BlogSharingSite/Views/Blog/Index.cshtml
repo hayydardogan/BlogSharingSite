@@ -1,0 +1,175 @@
+﻿@using BlogSharingSite.Models.Entity
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<TBL_Blogs>
+@{
+    ViewBag.Title = "Anasayfa";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+
+<!-- site content
+        ================================================== -->
+<div class="s-content">
+
+    <div class="masonry-wrap">
+
+        <div class="masonry">
+
+            <div class="grid-sizer"></div>
+
+            @{
+                if (Model.Count <= 0)
+                {
+                    <div style="display:flex; gap:25px; background-color:#ffd800; padding:25px">
+                        <div style="font-size:15pt">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div style="font-size:15pt">
+                            Yapılan aramaya göre bir sonuç bulunamadı.
+                        </div>
+                    </div>
+
+                    return;
+                }
+            }
+
+            @foreach (var x in Model)
+            {
+                <article class="masonry__brick entry format-standard animate-this" style="height:auto">
+
+                    <div class="entry__thumb">
+                        <a href="/Blog/BlogDetails/@x.blogID" class="entry__thumb-link">
+                            <img src="@Url.Content(x.blogImage)" style="height:354px; width:100%">
+                        </a>
+                    </div>
+
+                    <div class="entry__text">
+                        <div class="entry__header">
+
+                            <h2 class="entry__title"><a href="/Blog/BlogDetails/@x.blogID">@{var sonuc = x.blogTitle.Length >= 25 ? x.blogTitle.Substring(0, 25) : x.blogTitle.ToString();} @sonuc...</a></h2>
+
+                            <div class="entry__meta">
+                                <span class="entry__meta-cat">
+                                    <a href="/Blog/Category/@x.TBL_Categories.categoryID">@x.TBL_Categories.categoryTitle.ToUpper()</a>
+                                </span>
+                                <span class="entry__meta-date">
+                                    <a href="/Blog/BlogDetails/@x.blogID">
+                                        @{
+                                            var date = DateTime.Now.Subtract(DateTime.Parse(x.blogDate.ToString()));
+                                            var result = decimal.Parse(date.TotalDays.ToString());
+                                            result = Math.Floor(result);
+                                            var time = result.ToString() + " GÜN ÖNCE";
+
+                                            if (result == 0)
+                                            {
+                                                result = decimal.Parse(date.TotalHours.ToString());
+                                                result = Math.Floor(result);
+                                                time = result.ToString() + " SAAT ÖNCE";
+                                                if (result == 0)
+                                                {
+                                                    result = decimal.Parse(date.TotalMinutes.ToString());
+                                                    result = Math.Floor(result);
+                                                    time = result.ToString() + " DAKİKA ÖNCE";
+
+                                                    if (result <= 3)
+                                                    {
+                                                        time = "AZ ÖNCE";
+                                                    }
+                                                }
+
+                                            }
+                                            else if (result >= 30)
+                                            {
+                                                var month = (result - (result % 30)) / 30;
+                                                time = month + " AY ÖNCE";
+                                            }
+                                        }@time
+                                    </a>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="entry__excerpt" style="display:flex; justify-content:space-evenly;">
+                            <div>
+                                <i class="fa-regular fa-eye"></i> @x.blogViewCount.ToString()
+                            </div>
+                            <div>
+                                <i class="fa-regular fa-comment"></i> @x.TBL_Comments.Where(m => m.commentStatus == true).Count()
+                            </div>
+                        </div>
+                    </div>
+
+                </article> <!-- end article -->
+            }
+
+
+            <!--<article class="masonry__brick entry format-quote animate-this">
+
+                <div class="entry__thumb">
+                    <blockquote>
+                        <p>Good design is making something intelligible and memorable. Great design is making something memorable and meaningful.</p>
+
+                        <cite>Dieter Rams</cite>
+                    </blockquote>
+                </div>
+
+            </article>-->
+            <!-- end article -->
+
+
+
+        </div> <!-- end masonry -->
+
+    </div> <!-- end masonry-wrap -->
+    <div class="row">
+        <div class="column large-full">
+            <nav class="pgn">
+                <ul>
+                    <li>@Html.PagedListPager((IPagedList)Model, p => Url.Action("/Index", new { p }))</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="column large-full">
+            <nav class="pgn">
+                <ul>-->
+    @*<li><a class="pgn__prev" href="/Blog/Index?p=1">Prev</a></li>*@
+    <!--<li><a class="pgn__num" href="#0">1</a></li>
+    <li><span class="pgn__num current">2</span></li>
+    <li><a class="pgn__num" href="#0">3</a></li>
+    <li><a class="pgn__num" href="#0">4</a></li>
+    <li><a class="pgn__num" href="#0">5</a></li>
+    <li><span class="pgn__num dots">…</span></li>
+    <li><a class="pgn__num" href="#0">8</a></li>-->
+    @*<li><a class="pgn__next" href="#0">Next</a></li>*@
+    <!--</ul>
+            </nav>
+        </div>
+    </div>-->
+
+    <style>
+        .pagination-container .pagination {
+            display: flex;
+            gap: 10px;
+        }
+
+            .pagination-container .pagination a {
+                color: black;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .pagination-container .pagination a:hover {
+                    background-color: #d7d7d8;
+                }
+
+            .pagination-container .pagination .active a {
+                background-color: black;
+                color: white;
+            }
+    </style>
+
+</div> <!-- end s-content -->

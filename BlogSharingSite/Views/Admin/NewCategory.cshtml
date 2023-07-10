@@ -1,0 +1,181 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Categories
+@{
+    ViewBag.Title = "Yeni Kategori";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*<div class="s-content">
+
+        <div style="margin-left:20px">
+            <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">YENİ KATEGORİ</span>
+        </div>
+        <br />
+        <div class="masonry-wrap">
+            <form method="post">
+                <fieldset>
+                    <div class="form-field">
+                        <span>Kategori Adı</span>
+                        @Html.TextBoxFor(m => m.categoryTitle, new { @class = "full-width", placeholder = "Kategori adı giriniz", @required = "required", @maxlength = "50" })
+                    </div>
+                    <button class="btn btn--primary btn-wide btn--large full-width">KATEGORİ EKLE</button>
+
+
+                </fieldset>
+            </form>
+        </div>
+
+    </div>*@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">YENİ KATEGORİ</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <fieldset>
+            <div class="form-field">
+                <span>Kategori Adı</span>
+                <input type="text" id="categoryTitle" class="full-width" placeholder="Kategori adı" maxlength="50" />
+                @*@Html.TextBoxFor(m => m.categoryTitle, new { @class = "full-width", @id = "categoryTitle" })*@
+            </div>
+            <button id="btnAddCategory" class="btn btn--primary btn-wide btn--large full-width">
+
+                KATEGORİ EKLE
+            </button>
+        </fieldset>
+        @*<div id="result-alert" style="display:none; ">
+                <div id="result-alert-icon">
+                    <i id="result-icon"></i>
+                </div>
+                <div id="result-alert-text">
+                    Kategori ekleme işlemi başarılı.
+                </div>
+            </div>*@
+    </div>
+</div>
+
+<style>
+    .font-black {
+        color: black;
+    }
+
+    .fa {
+        margin-left: -12px;
+        margin-right: 8px;
+    }
+</style>
+
+<script type="text/javascript">
+    $("#btnAddCategory").click(function () {
+        let category = {
+            categoryTitle: $('#categoryTitle').val()
+        };
+        if (category.categoryTitle.length <= 3) {
+            $(this).html('<i class="fa-solid fa-triangle-exclamation fa-beat" style="--fa-animation-duration: 0.5s; font-size: 15pt"></i>');
+            $(this).prop("disabled", true);
+            setTimeout(() => {
+                $(this).html("KATEGORİ EKLE");
+                $(this).prop("disabled", false);
+            }, 3500);
+
+            Toastify({
+                text: "Kategori adı en az 3 karakterden oluşmalıdır.",
+                duration: 3500,
+                avatar: "/Images/warning.png",
+                style: {
+                    background: "white",
+                    color: "#ffc44c"
+                },
+                offset: {
+                    x: 50,
+                    y: 10
+                }
+            }).showToast();
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AddCategory/",
+                data: category,
+                success: function (result) {
+                    if (result == "ok") {
+
+                        $("#btnAddCategory").html('<i class="fa-regular fa-circle-check fa-beat" style="--fa-animation-duration: 0.5s; font-size: 15pt"></i>');
+                        $("#btnAddCategory").prop("disabled", true);
+                        setTimeout(() => {
+                            $("#btnAddCategory").html("KATEGORİ EKLE");
+                            $("#btnAddCategory").prop("disabled", false);
+                        }, 3500);
+
+                        $("#categoryTitle").val("");
+                        Toastify({
+                            text: category.categoryTitle + " adlı kategori başarıyla eklendi.",
+                            duration: 3500,
+                            avatar: "/Images/success.png",
+                            style: {
+                                background: "white",
+                                color: "#40b454"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+
+                    }
+                    else if (result == "already") {
+
+
+                        $("#btnAddCategory").html('<i class="fa-solid fa-triangle-exclamation fa-beat" style="--fa-animation-duration: 0.5s; font-size: 15pt"></i>');
+                        $("#btnAddCategory").prop("disabled", true);
+                        setTimeout(() => {
+                            $("#btnAddCategory").html("KATEGORİ EKLE");
+                            $("#btnAddCategory").prop("disabled", false);
+                        }, 3500);
+
+                        Toastify({
+                            text: category.categoryTitle + " adlı kategori zaten kayıtlı.",
+                            duration: 3500,
+                            avatar: "/Images/warning.png",
+                            style: {
+                                background: "white",
+                                color: "#ffc44c"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+                    }
+                    else {
+
+                        $("#btnAddCategory").html('<i class="fa-solid fa-xmark fa-beat" style="--fa-animation-duration: 0.5s; font-size: 15pt"></i>');
+                        $("#btnAddCategory").prop("disabled", true);
+                        setTimeout(() => {
+                            $("#btnAddCategory").html("KATEGORİ EKLE");
+                            $("#btnAddCategory").prop("disabled", false);
+                        }, 3500);
+
+                        Toastify({
+                            text: " Beklenmeyen bir hata oluştu.",
+                            duration: 3500,
+                            avatar: "/Images/cancel.png",
+                            style: {
+                                background: "white",
+                                color: "#e84c4c"
+                            },
+                            offset: {
+                                x: 50, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                                y: 10 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                            }
+                        }).showToast();
+                    }
+                }
+            });
+        }
+    });
+</script>

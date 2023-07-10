@@ -1,0 +1,133 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using BlogSharingSite.Models.Entity;
+@model PagedList.IPagedList<TBL_Categories>
+@{
+    ViewBag.Title = "Kategoriler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">KATEGORİ LİSTESİ</span>
+    </div>
+    <br />
+    
+    <br />
+    <div class="masonry-wrap">
+
+        <div class="table-responsive">
+            @ViewBag.msj
+            <table class="my-data">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Kategori Adı</th>
+                        <th>Sil</th>
+                        <th>Güncelle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model)
+                    {
+                        <tr>
+                            <td>@x.categoryID</td>
+                            <td>@x.categoryTitle</td>
+                            <td><a class="btn btn--primary btn-delete" href="/Admin/DeleteCategory/@x.categoryID">SİL</a></td>
+                            <td><a class="btn btn--stroke btn-update" href="/Admin/UpdateCategory/@x.categoryID">GÜNCELLE</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="display:flex; justify-content:space-between">
+                <div>
+                    <nav class="pgn">
+                        <ul>
+                            <li>@Html.PagedListPager((IPagedList)Model, p => Url.Action("/Categories", new { p }))</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div style="display:flex; justify-content:end">
+                    <a href="/Admin/NewCategory" class="btn btn--primary btn-wide btn--large">YENİ KATEGORİ</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    .my-data .btn-delete {
+        background-color: red !important;
+        color: white;
+        border-color: red;
+    }
+
+        .my-data .btn-delete:hover {
+            background-color: white !important;
+            border-color: red;
+            color: red;
+        }
+
+    .my-data .btn-active {
+        background-color: green !important;
+        color: white;
+        border-color: green;
+    }
+
+        .my-data .btn-active:hover {
+            background-color: white !important;
+            border-color: green;
+            color: green;
+        }
+
+    .my-data .btn-update {
+        background-color: #16b0ea !important;
+        color: white;
+        border-color: #16b0ea;
+    }
+
+        .my-data .btn-update:hover {
+            background-color: white !important;
+            color: #16b0ea;
+            border-color: #16b0ea;
+        }
+
+    .my-data .show {
+        background-color: black !important;
+        color: white;
+        border-color: black;
+    }
+
+    .my-data .btn-show:hover {
+        background-color: white !important;
+        color: black;
+        border-color: black;
+    }
+
+    .pagination-container .pagination {
+        display: flex;
+        gap: 10px;
+    }
+
+        .pagination-container .pagination a {
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .pagination-container .pagination a:hover {
+                background-color: #d7d7d8;
+            }
+
+        .pagination-container .pagination .active a {
+            background-color: black;
+            color: white;
+        }
+</style>
+
+

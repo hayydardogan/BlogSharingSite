@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BlogSharingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TBL_About">
+          <Key>
+            <PropertyRef Name="aboutID" />
+          </Key>
+          <Property Name="aboutID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="aboutContent" Type="varchar" MaxLength="500" />
+          <Property Name="aboutImage" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TBL_AdminInfo">
+          <Key>
+            <PropertyRef Name="adminID" />
+          </Key>
+          <Property Name="adminID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adminUserName" Type="varchar" MaxLength="50" />
+          <Property Name="adminPassword" Type="varchar" MaxLength="50" />
+          <Property Name="adminMail" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TBL_Blogs">
+          <Key>
+            <PropertyRef Name="blogID" />
+          </Key>
+          <Property Name="blogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="blogTitle" Type="varchar" MaxLength="100" />
+          <Property Name="blogContent" Type="varchar(max)" />
+          <Property Name="blogImage" Type="varchar" MaxLength="100" />
+          <Property Name="blogCategory" Type="tinyint" />
+          <Property Name="blogDate" Type="datetime" />
+          <Property Name="blogViewCount" Type="int" />
+          <Property Name="blogStatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="TBL_Categories">
+          <Key>
+            <PropertyRef Name="categoryID" />
+          </Key>
+          <Property Name="categoryID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryTitle" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TBL_Comments">
+          <Key>
+            <PropertyRef Name="commentID" />
+          </Key>
+          <Property Name="commentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="commentUserName" Type="varchar" MaxLength="50" />
+          <Property Name="commentUserMail" Type="varchar" MaxLength="50" />
+          <Property Name="commentContent" Type="varchar" MaxLength="150" />
+          <Property Name="commentDate" Type="datetime" />
+          <Property Name="blogID" Type="int" />
+          <Property Name="commentStatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="TBL_Files">
+          <Key>
+            <PropertyRef Name="fileID" />
+          </Key>
+          <Property Name="fileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fileTitle" Type="varchar" MaxLength="50" />
+          <Property Name="filePath" Type="varchar" MaxLength="250" />
+          <Property Name="fileDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TBL_Messages">
+          <Key>
+            <PropertyRef Name="messageID" />
+          </Key>
+          <Property Name="messageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="senderName" Type="varchar" MaxLength="50" />
+          <Property Name="senderMail" Type="varchar" MaxLength="50" />
+          <Property Name="messageSubject" Type="varchar" MaxLength="50" />
+          <Property Name="messageContent" Type="varchar" MaxLength="350" />
+          <Property Name="messageDate" Type="datetime" />
+          <Property Name="messageStatus" Type="bit" />
+        </EntityType>
+        <Association Name="FK_TBL_Blogs_TBL_Categories">
+          <End Role="TBL_Categories" Type="Self.TBL_Categories" Multiplicity="0..1" />
+          <End Role="TBL_Blogs" Type="Self.TBL_Blogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_Categories">
+              <PropertyRef Name="categoryID" />
+            </Principal>
+            <Dependent Role="TBL_Blogs">
+              <PropertyRef Name="blogCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_Comments_TBL_Blogs">
+          <End Role="TBL_Blogs" Type="Self.TBL_Blogs" Multiplicity="0..1" />
+          <End Role="TBL_Comments" Type="Self.TBL_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_Blogs">
+              <PropertyRef Name="blogID" />
+            </Principal>
+            <Dependent Role="TBL_Comments">
+              <PropertyRef Name="blogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BlogSharingModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_About" EntityType="Self.TBL_About" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_AdminInfo" EntityType="Self.TBL_AdminInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Blogs" EntityType="Self.TBL_Blogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Categories" EntityType="Self.TBL_Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Comments" EntityType="Self.TBL_Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Files" EntityType="Self.TBL_Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Messages" EntityType="Self.TBL_Messages" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TBL_Blogs_TBL_Categories" Association="Self.FK_TBL_Blogs_TBL_Categories">
+            <End Role="TBL_Categories" EntitySet="TBL_Categories" />
+            <End Role="TBL_Blogs" EntitySet="TBL_Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBL_Comments_TBL_Blogs" Association="Self.FK_TBL_Comments_TBL_Blogs">
+            <End Role="TBL_Blogs" EntitySet="TBL_Blogs" />
+            <End Role="TBL_Comments" EntitySet="TBL_Comments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BlogSharingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TBL_Blogs">
+          <Key>
+            <PropertyRef Name="blogID" />
+          </Key>
+          <Property Name="blogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="blogTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="blogContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="blogImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="blogCategory" Type="Byte" />
+          <Property Name="blogDate" Type="DateTime" Precision="3" />
+          <Property Name="blogStatus" Type="Boolean" />
+          <NavigationProperty Name="TBL_Categories" Relationship="Self.FK_TBL_Blogs_TBL_Categories" FromRole="TBL_Blogs" ToRole="TBL_Categories" />
+          <NavigationProperty Name="TBL_Comments" Relationship="BlogSharingModel.FK_TBL_Comments_TBL_Blogs" FromRole="TBL_Blogs" ToRole="TBL_Comments" />
+          <Property Name="blogViewCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TBL_Categories">
+          <Key>
+            <PropertyRef Name="categoryID" />
+          </Key>
+          <Property Name="categoryID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TBL_Blogs" Relationship="Self.FK_TBL_Blogs_TBL_Categories" FromRole="TBL_Categories" ToRole="TBL_Blogs" />
+        </EntityType>
+        <Association Name="FK_TBL_Blogs_TBL_Categories">
+          <End Role="TBL_Categories" Type="Self.TBL_Categories" Multiplicity="0..1" />
+          <End Role="TBL_Blogs" Type="Self.TBL_Blogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_Categories">
+              <PropertyRef Name="categoryID" />
+            </Principal>
+            <Dependent Role="TBL_Blogs">
+              <PropertyRef Name="blogCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BlogSharingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TBL_Blogs" EntityType="Self.TBL_Blogs" />
+          <EntitySet Name="TBL_Categories" EntityType="Self.TBL_Categories" />
+          <AssociationSet Name="FK_TBL_Blogs_TBL_Categories" Association="Self.FK_TBL_Blogs_TBL_Categories">
+            <End Role="TBL_Categories" EntitySet="TBL_Categories" />
+            <End Role="TBL_Blogs" EntitySet="TBL_Blogs" />
+          </AssociationSet>
+          <EntitySet Name="TBL_Comments" EntityType="BlogSharingModel.TBL_Comments" />
+          <AssociationSet Name="FK_TBL_Comments_TBL_Blogs" Association="BlogSharingModel.FK_TBL_Comments_TBL_Blogs">
+            <End Role="TBL_Blogs" EntitySet="TBL_Blogs" />
+            <End Role="TBL_Comments" EntitySet="TBL_Comments" />
+          </AssociationSet>
+          <EntitySet Name="TBL_About" EntityType="BlogSharingModel.TBL_About" />
+          <EntitySet Name="TBL_Messages" EntityType="BlogSharingModel.TBL_Messages" />
+          <EntitySet Name="TBL_Files" EntityType="BlogSharingModel.TBL_Files" />
+          <EntitySet Name="TBL_AdminInfo" EntityType="BlogSharingModel.TBL_AdminInfo" />
+        </EntityContainer>
+        <EntityType Name="TBL_Comments">
+          <Key>
+            <PropertyRef Name="commentID" />
+          </Key>
+          <Property Name="commentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="commentUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="commentContent" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="commentDate" Type="DateTime" Precision="3" />
+          <Property Name="blogID" Type="Int32" />
+          <Property Name="commentStatus" Type="Boolean" />
+          <NavigationProperty Name="TBL_Blogs" Relationship="BlogSharingModel.FK_TBL_Comments_TBL_Blogs" FromRole="TBL_Comments" ToRole="TBL_Blogs" />
+          <Property Name="commentUserMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_TBL_Comments_TBL_Blogs">
+          <End Type="BlogSharingModel.TBL_Blogs" Role="TBL_Blogs" Multiplicity="0..1" />
+          <End Type="BlogSharingModel.TBL_Comments" Role="TBL_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_Blogs">
+              <PropertyRef Name="blogID" />
+            </Principal>
+            <Dependent Role="TBL_Comments">
+              <PropertyRef Name="blogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TBL_About">
+          <Key>
+            <PropertyRef Name="aboutID" />
+          </Key>
+          <Property Name="aboutID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="aboutContent" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="aboutImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TBL_Messages">
+          <Key>
+            <PropertyRef Name="messageID" />
+          </Key>
+          <Property Name="messageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="senderName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="senderMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="messageSubject" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="messageContent" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="messageStatus" Type="Boolean" />
+          <Property Name="messageDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TBL_Files">
+          <Key>
+            <PropertyRef Name="fileID" />
+          </Key>
+          <Property Name="fileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fileTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="filePath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="fileDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TBL_AdminInfo">
+          <Key>
+            <PropertyRef Name="adminID" />
+          </Key>
+          <Property Name="adminID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adminUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adminPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adminMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BlogSharingModelStoreContainer" CdmEntityContainer="BlogSharingEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BlogSharingModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Blogs">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_Blogs">
+              <MappingFragment StoreEntitySet="TBL_Blogs">
+                <ScalarProperty Name="blogViewCount" ColumnName="blogViewCount" />
+                <ScalarProperty Name="blogID" ColumnName="blogID" />
+                <ScalarProperty Name="blogTitle" ColumnName="blogTitle" />
+                <ScalarProperty Name="blogContent" ColumnName="blogContent" />
+                <ScalarProperty Name="blogImage" ColumnName="blogImage" />
+                <ScalarProperty Name="blogCategory" ColumnName="blogCategory" />
+                <ScalarProperty Name="blogDate" ColumnName="blogDate" />
+                <ScalarProperty Name="blogStatus" ColumnName="blogStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Categories">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_Categories">
+              <MappingFragment StoreEntitySet="TBL_Categories">
+                <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+                <ScalarProperty Name="categoryTitle" ColumnName="categoryTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Comments">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_Comments">
+              <MappingFragment StoreEntitySet="TBL_Comments">
+                <ScalarProperty Name="commentUserMail" ColumnName="commentUserMail" />
+                <ScalarProperty Name="commentStatus" ColumnName="commentStatus" />
+                <ScalarProperty Name="blogID" ColumnName="blogID" />
+                <ScalarProperty Name="commentDate" ColumnName="commentDate" />
+                <ScalarProperty Name="commentContent" ColumnName="commentContent" />
+                <ScalarProperty Name="commentUserName" ColumnName="commentUserName" />
+                <ScalarProperty Name="commentID" ColumnName="commentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_About">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_About">
+              <MappingFragment StoreEntitySet="TBL_About">
+                <ScalarProperty Name="aboutImage" ColumnName="aboutImage" />
+                <ScalarProperty Name="aboutContent" ColumnName="aboutContent" />
+                <ScalarProperty Name="aboutID" ColumnName="aboutID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Messages">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_Messages">
+              <MappingFragment StoreEntitySet="TBL_Messages">
+                <ScalarProperty Name="messageDate" ColumnName="messageDate" />
+                <ScalarProperty Name="messageStatus" ColumnName="messageStatus" />
+                <ScalarProperty Name="messageContent" ColumnName="messageContent" />
+                <ScalarProperty Name="messageSubject" ColumnName="messageSubject" />
+                <ScalarProperty Name="senderMail" ColumnName="senderMail" />
+                <ScalarProperty Name="senderName" ColumnName="senderName" />
+                <ScalarProperty Name="messageID" ColumnName="messageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Files">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_Files">
+              <MappingFragment StoreEntitySet="TBL_Files">
+                <ScalarProperty Name="fileDate" ColumnName="fileDate" />
+                <ScalarProperty Name="filePath" ColumnName="filePath" />
+                <ScalarProperty Name="fileTitle" ColumnName="fileTitle" />
+                <ScalarProperty Name="fileID" ColumnName="fileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_AdminInfo">
+            <EntityTypeMapping TypeName="BlogSharingModel.TBL_AdminInfo">
+              <MappingFragment StoreEntitySet="TBL_AdminInfo">
+                <ScalarProperty Name="adminMail" ColumnName="adminMail" />
+                <ScalarProperty Name="adminPassword" ColumnName="adminPassword" />
+                <ScalarProperty Name="adminUserName" ColumnName="adminUserName" />
+                <ScalarProperty Name="adminID" ColumnName="adminID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

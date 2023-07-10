@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "BenimVerilerim";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">YENİ KATEGORİ</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <button id="btnAddCategory" class="btn btn--primary  btn--large">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            YENİLE
+        </button>
+
+        <div id="my-data">
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#btnAddCategory").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Veriler/",
+            datatype: "json",
+            success: function (Result) {
+                let table = `<table class="my-data">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Yorum Sahibi</th>
+                    <th>Yorum Sahibi Mail</th>
+                    <th>Yorum içerik</th>
+                </tr>
+            </thead>
+            <tbody>`;
+                $.each(Result, (index, value) => {
+                    table += `<tr><td></td><td>${value.commentID}</td><td></td><td></td></tr>`;
+
+                });
+
+                table += `</tbody>
+        </table>`;
+                $("#my-data").html(table);
+            }
+        });
+    });
+</script>
+

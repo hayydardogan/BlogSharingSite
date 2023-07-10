@@ -1,0 +1,101 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Blogs
+@{
+    ViewBag.Title = "Blog Detayları";
+    Layout = "~/Views/Shared/_BlogDetailsLayout.cshtml";
+}
+
+
+<!-- site content
+        ================================================== -->
+<div class="s-content content">
+    <main class="row content__page">
+
+        <article class="column large-full entry format-standard">
+
+            <div class="media-wrap entry__media">
+                <div class="entry__post-thumb">
+                    <img src="@Url.Content(Model.blogImage)" style="width:100%; height:425px;">
+                </div>
+            </div>
+            <div class="content__page-header entry__header">
+                <h1 class="display-1 entry__title">
+                    @Html.DisplayTextFor(m => m.blogTitle)
+                </h1>
+                <ul class="entry__header-meta">
+                    <li class="date">@Html.DisplayTextFor(m => m.blogDate)</li>
+                    <li>
+                        <a href="/Blog/Category/@Model.TBL_Categories.categoryID">@Html.DisplayTextFor(m => m.TBL_Categories.categoryTitle)</a>
+                    </li>
+                </ul>
+            </div> <!-- end entry__header -->
+
+            <div class="entry__content">
+                <p>
+                    @Html.Raw(Model.blogContent)
+                </p>
+
+                @*<blockquote>
+                        <p>
+                            For God so loved the world, that he gave his only Son, that whoever believes in
+                            him should not perish but have eternal life. For God did not send his Son into
+                            the world to condemn the world, but in order that the world might be
+                            saved through him.
+                        </p>
+                        <cite>John 3:16-17 ESV</cite>
+                    </blockquote>*@
+
+
+
+
+
+                @*<pre><code class="language-css">
+                        code {
+                        font-size: 1.4rem;
+                        margin: 0 .2rem;
+                        padding: .2rem .6rem;
+                        white-space: nowrap;
+                        background: #F1F1F1;
+                        border: 1px solid #E1E1E1;
+                        border-radius: 3px;
+                        }
+                    </code></pre>*@
+
+
+
+
+                @*<p class="entry__tags">
+                        <span>Post Tags</span>
+
+                        <span class="entry__tag-list">
+                            <a href="#0">orci</a>
+                            <a href="#0">lectus</a>
+                            <a href="#0">varius</a>
+                            <a href="#0">turpis</a>
+                        </span>
+
+                    </p>*@
+            </div> <!-- end entry content -->
+
+
+
+
+        </article> <!-- end column large-full entry-->
+
+
+        <div class="comments-wrap" style="background-color:transparent; width:100%">
+
+            @Html.Action("Comments", "Blog", new { id = @Model.blogID })
+
+            <div class="column large-12 comment-respond">
+
+                @Html.Action("newComment", "Blog", new { id = Model.blogID })
+
+            </div> <!-- end comment-respond -->
+
+        </div> <!-- end comments-wrap -->
+    </main>
+
+</div> <!-- end s-content -->
+<script type="text/javascript" language="javascript">
+    CKEDITOR.replace(@Html.DisplayFor(m=>m.blogContent));
+</script>

@@ -1,0 +1,162 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using BlogSharingSite.Models.Entity;
+@model PagedList.IPagedList<TBL_Files>
+@{
+    ViewBag.Title = "Dosya Listesi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content" >
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">DOSYA LİSTESİ</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+
+        <div class="table-responsive">
+
+            <table class="my-data">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Önizleme</th>
+                        <th>Görsel Başlığı</th>
+                        <th>Kopyala</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model)
+                    {
+                        <tr>
+                            <td>@x.fileID</td>
+                            <td>
+                                <img src="@Url.Content(x.filePath)" style="width:250px; height:150px;" />
+                            </td>
+                            <td>@x.fileTitle</td>
+                            @*<td>
+                                    <a class="btn " href="/Admin/CopyClipboard/https://localhost:44333/@x.filePath" style="padding: 5px 15px; text-transform:lowercase;">
+                                        https://localhost:44333/@x.filePath.Substring(2).Substring(0, 10)...
+                                    </a>
+                                </td>*@
+                            @*Unique id yapımı*@
+                            <td>
+                                <button id="@x.fileID" class="btn btn--primary btn-wide btn-reverse" onclick="copyClipboard('https://localhost:44333/@x.filePath.Substring(2)','@x.fileID')">BAĞLANTIYI KOPYALA</button>
+                            </td>
+                            <td><a class="btn btn--primary btn-delete" href="/Admin/DeleteFile/@x.fileID">SİL</a></td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="display:flex; justify-content:space-between">
+                <div>
+                    <nav class="pgn">
+                        <ul>
+                            <li>@Html.PagedListPager((IPagedList)Model, p => Url.Action("/FileList", new { p }))</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div style="display:flex; justify-content:end">
+                    <a href="/Admin/FileUpload" class="btn btn--primary btn-wide btn--large">YENİ DOSYA</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function copyReverse(id) {
+        document.getElementById(id).innerHTML = "BAĞLANTIYI KOPYALA";
+    }
+
+    function copyClipboard(text, id) {
+        navigator.clipboard.writeText(text).then(function () {
+            document.getElementById(id).innerHTML = "KOPYALANDI";
+            setTimeout(() => {
+                document.getElementById(id).innerHTML = "BAĞLANTIYI KOPYALA";
+            }, 2500)
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+
+</script>
+
+<style>
+    .my-data .btn-delete {
+        background-color: red !important;
+        color: white;
+        border-color: red;
+    }
+
+        .my-data .btn-delete:hover {
+            background-color: white !important;
+            border-color: red;
+            color: red;
+        }
+
+    .my-data .btn-active {
+        background-color: green !important;
+        color: white;
+        border-color: green;
+    }
+
+        .my-data .btn-active:hover {
+            background-color: white !important;
+            border-color: green;
+            color: green;
+        }
+
+    .my-data .btn-update {
+        background-color: #16b0ea !important;
+        color: white;
+        border-color: #16b0ea;
+    }
+
+        .my-data .btn-update:hover {
+            background-color: white !important;
+            color: #16b0ea;
+            border-color: #16b0ea;
+        }
+
+    .my-data .show {
+        background-color: black !important;
+        color: white;
+        border-color: black;
+    }
+
+    .my-data .btn-show:hover {
+        background-color: white !important;
+        color: black;
+        border-color: black;
+    }
+
+    .pagination-container .pagination {
+        display: flex;
+        gap: 10px;
+    }
+
+        .pagination-container .pagination a {
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .pagination-container .pagination a:hover {
+                background-color: #d7d7d8;
+            }
+
+        .pagination-container .pagination .active a {
+            background-color: black;
+            color: white;
+        }
+</style>
+

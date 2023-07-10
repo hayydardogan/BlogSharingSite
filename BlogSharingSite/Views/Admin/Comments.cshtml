@@ -1,0 +1,165 @@
+﻿@using BlogSharingSite.Models.Entity
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<TBL_Comments>
+@{
+    ViewBag.Title = "Yorumlar";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">@ViewBag.status YORUMLAR</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+
+        <div class="table-responsive">
+
+            <table class="my-data">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Yazar</th>
+                        @*<th>E-Posta</th>*@
+                        <th>İçerik</th>
+                        @*<th>Tarih</th>*@
+                        <th>Blog</th>
+                        @{ var result2 = ViewBag.status == "AKTİF" ? true : false;}
+                        @{ if (result2)
+                            {
+                                <th>Görüntüle</th>
+                            } }
+                        <th>@{ var result = ViewBag.status == "AKTİF" ? "Sil" : "Aktif et";} @result</th>
+                        <th>Güncelle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model)
+                    {
+                        <tr>
+                            <td>@x.commentID</td>
+                            @*<td>@{var sonuc = x.commentUserName.Length >= 15 ? x.commentUserName.Substring(0, 15) : x.commentUserName.ToString();} @sonuc</td>*@
+                            <td>@x.commentUserName</td>
+                            @*<td>@x.commentUserMail</td>*@
+                            <td>@{var sonuc2 = x.commentContent.Length >= 15 ? x.commentContent.Substring(0, 15) : x.commentContent.ToString();} @sonuc2...</td>
+                            @*<td>@x.commentDate</td>*@
+                            <td>@{var sonuc3 = x.TBL_Blogs.blogTitle.Length >= 15 ? x.TBL_Blogs.blogTitle.Substring(0, 15) : x.TBL_Blogs.blogTitle.ToString();} @sonuc3...</td>
+                            @*<td>@{var durum = x.blogStatus == true ? "Aktif" : "Pasif";}@durum</td>*@
+                            @{ if (result2)
+                                {
+                                    <td><a class="btn btn--primary btn-show" href="/Blog/BlogDetails/@x.TBL_Blogs.blogID">GÖRÜNTÜLE</a></td>
+                                } }
+
+                            @{ if (result == "Aktif et")
+                                {
+                                    <td><a class="btn btn--stroke btn-active" href="/Admin/ActiveComment/@x.commentID">AKTİF ET</a></td>
+                                }
+                                else
+                                {
+                                    <td><a class="btn btn--stroke btn-delete" href="/Admin/DeleteComment/@x.commentID">SİL</a></td>
+                                }
+                            }
+                            <td><a class="btn btn--stroke btn-update" href="/Admin/UpdateComment/@x.commentID" style="background-color:green;">GÜNCELLE</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="display:flex; justify-content:center">
+                <div>
+                    <nav class="pgn">
+                        <ul>
+                            @{
+                                if (ViewBag.status == "AKTİF")
+                                {
+                                    <li>@Html.PagedListPager((IPagedList)Model, p => Url.Action("/Comments", new { p, status = 1 }))</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.PagedListPager((IPagedList)Model, p => Url.Action("/Comments", new { p, status = 0 }))</li>
+                                }
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    .my-data .btn-delete {
+        background-color: red !important;
+        color: white;
+        border-color: red;
+    }
+
+        .my-data .btn-delete:hover {
+            background-color: white !important;
+            border-color: red;
+            color: red;
+        }
+
+    .my-data .btn-active {
+        background-color: green !important;
+        color: white;
+        border-color: green;
+    }
+
+        .my-data .btn-active:hover {
+            background-color: white !important;
+            border-color: green;
+            color: green;
+        }
+
+    .my-data .btn-update {
+        background-color: #16b0ea !important;
+        color: white;
+        border-color: #16b0ea;
+    }
+
+        .my-data .btn-update:hover {
+            background-color: white !important;
+            color: #16b0ea;
+            border-color: #16b0ea;
+        }
+
+    .my-data .show {
+        background-color: black !important;
+        color: white;
+        border-color: black;
+    }
+
+    .my-data .btn-show:hover {
+        background-color: white !important;
+        color: black;
+        border-color: black;
+    }
+
+    .pagination-container .pagination {
+        display: flex;
+        gap: 10px;
+    }
+
+        .pagination-container .pagination a {
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .pagination-container .pagination a:hover {
+                background-color: #d7d7d8;
+            }
+
+        .pagination-container .pagination .active a {
+            background-color: black;
+            color: white;
+        }
+</style>
+

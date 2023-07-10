@@ -1,0 +1,102 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Blogs
+@{
+    ViewBag.Title = "Yeni Blog Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">YENİ BLOG EKLE</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <div class="form-field">
+                    @Html.TextBoxFor(m => m.blogID, new { @class = "full-width", style = "display:none;", @Value = ViewBag.deger })
+                </div>
+                <div class="form-field">
+                    @Html.TextBoxFor(m => m.blogTitle, new { @class = "full-width", placeholder = "Blog Başlığı", @required = "required", @maxlength = "100" })
+                </div>
+
+
+                <div style="display:flex;">
+                    <div class="form-field">
+                        @*@Html.TextBoxFor(m => m.blogImage, new { @class = "full-width", placeholder = "Blog Image", @required = "required", @maxlength = "50" })*@
+                        <span>Blog Görsel</span>
+                        <input type="file" id="blogImage" name="blogImage" required class="full-width" />
+
+
+                    </div>
+
+                    <div class="gorsel">
+                        @*Bu alana seçilen fotoğrafın önizlemesi getilir.*@
+                    </div>
+
+                </div>
+                <div class="form-field">
+                    @Html.DropDownListFor(m => m.TBL_Categories.categoryID, (List<SelectListItem>)ViewBag.dgr, new { @class = "full-width" })
+                </div>
+                <div class="form-field">
+                    @Html.TextAreaFor(m => m.blogContent, new { @class = "ckeditor", placeholder = "Blog İçeriği", style = "resize: none;", @maxlength = "150", @required = "required" })
+                </div>
+                <button id="addBlog" class="btn btn--primary btn-wide btn--large full-width">BLOG EKLE</button>
+
+
+            </fieldset>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+    $("#addBlog").prop("disabled", true);
+    $(document).ready(function () {
+        $("#blogImage").change(function () {
+            var sayi = $("#blogImage").get(0).files.length;
+            $(".gorsel").empty();
+            if (sayi > 1) {
+                $("#addBlog").prop("disabled", true);
+                alert("En Fazla 25 Fotoğraf Yükleyebilirsiniz");
+            }
+            else if (sayi < 1) {
+                $("#addBlog").prop("disabled", true);
+                alert("Lütfen Bir Fotoğraf Seçiniz");
+            }
+            else {
+                $("#addBlog ").prop("disabled", false);
+                for (var i = 0; i < sayi; i++) {
+                    var file = document.getElementById("blogImage").files[i];
+                    var readImg = new FileReader();
+                    readImg.readAsDataURL(file);
+                    readImg.onload = function (e) {
+                        var resimadi = "resim" + i;
+                        $(".gorsel").append("<img id=" + resimadi + "style='text-align:center' " + " src=" + e.target.result + " width='100' height='100' />" + " ");
+
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<style>
+    input[type=file]::file-selector-button {
+        margin-right: 20px;
+        border: 1px solid #084cdf !important;
+        background: #084cdf !important;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #fff !important;
+        cursor: pointer;
+        transition: background .2s ease-in-out !important;
+    }
+
+        input[type=file]::file-selector-button:hover {
+            background: #0d45a5 !important;
+        }
+</style>

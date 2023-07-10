@@ -1,0 +1,42 @@
+﻿@using BlogSharingSite.Models.Entity
+@model List<TBL_About>
+@{
+    ViewBag.Title = "Hakkımızda";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+<!-- site content
+        ================================================== -->
+<div class="s-content content">
+    <main class="row content__page">
+
+        <section class="column large-full entry format-standard">
+
+            @foreach (var x in Model)
+            {
+                <div class="media-wrap">
+                    <div>
+                        <img src="@Url.Content(x.aboutImage)">
+                    </div>
+                </div>
+
+                <div class="content__page-header">
+                    <h1 class="display-1">
+                        Merhaba, ben Haydar.
+                    </h1>
+                </div> <!-- end content__page-header -->
+
+                <hr />
+
+                <p class="lead drop-cap">
+                    @x.aboutContent
+                </p>
+            }
+
+
+
+        </section>
+
+    </main>
+
+</div> <!-- end s-content -->

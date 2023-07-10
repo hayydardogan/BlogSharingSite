@@ -1,0 +1,53 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Blogs
+@{
+    ViewBag.Title = "Blog Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">BLOG GÜNCELLE</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <form method="post">
+            <fieldset>
+                <div class="form-field">
+                    @Html.TextBoxFor(m => m.blogID, new { @class = "full-width", style = "display:none;" })
+                </div>
+                <div class="form-field">
+                    <span>Başlık</span>
+                    @Html.TextBoxFor(m => m.blogTitle, new { @class = "full-width", placeholder = "Blog Başlığı", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Görsel</span>
+                    @Html.TextBoxFor(m => m.blogImage, new { @class = "full-width", placeholder = "Blog Image", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Kategori</span>
+                    @Html.DropDownListFor(m => m.TBL_Categories.categoryID, (List<SelectListItem>)ViewBag.dgr, new { @class = "full-width" })
+                </div>
+                <div class="form-field">
+                    <span>Durum</span>
+                    @Html.DropDownListFor(m => m.blogStatus, (List<SelectListItem>)ViewBag.drm, new { @class = "full-width" })
+                </div>
+                <div class="form-field">
+                    <span>Tarih</span>
+                    @Html.TextBoxFor(m => m.blogDate, new { @class = "full-width", placeholder = "Blog Tarihi", @required = "required", @maxlength = "50" })
+                </div>
+                <div class="form-field">
+                    <span>İçerik</span>
+                    @Html.TextAreaFor(m => m.blogContent, new { @class = "ckeditor", placeholder = "Blog İçeriği", style = "resize: none;", @maxlength = "150", @required = "required" })
+                </div>
+                <button class="btn btn--primary btn-wide btn--large full-width">BLOG GÜNCELLE</button>
+
+
+            </fieldset>
+        </form>
+    </div>
+
+</div>
+

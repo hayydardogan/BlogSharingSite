@@ -1,0 +1,51 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Comments
+
+@*@if (TempData["newComment"] != null)
+    {
+
+        <script>
+            var item = document.getElementById("#commentAlert");
+            item.style.display = "block";
+        </script>
+    }*@
+@if (TempData["commented"] != null)
+{
+    @*<script type="text/javascript" src="~/blog/js/Toast.js"></script>
+    <link href="~/blog/css/Toast.css" rel="stylesheet"/>*@
+    <script>
+        window.location.href = window.location.href;
+    </script>
+}
+<!-- START respond -->
+<div id="respond">
+
+    <h3 class="h2">Yorum yap <span>E-Posta adresiniz yayınlanmayacaktır.</span></h3>
+
+    <form method="post">
+        <fieldset>
+            <div class="form-field">
+                @Html.TextBoxFor(m => m.blogID, new { @class = "full-width", style = "display:none;", @Value = ViewBag.deger })
+            </div>
+            <div class="form-field">
+                @Html.TextBoxFor(m => m.commentUserName, new { @class = "full-width", placeholder = "Adınız", @required = "required" , @maxlength = "50" })
+            </div>
+
+            <div class="form-field">
+                @Html.TextBoxFor(m => m.commentUserMail, new { @class = "full-width", placeholder = "E-Posta adresiniz" , @required = "required", @maxlength = "50" })
+            </div>
+
+            <div class="form-field">
+                @Html.TextAreaFor(m => m.commentContent, new { @class = "full-width", placeholder = "Yorumunuz", style = "resize: none;", @maxlength = "150", @required = "required" })
+            </div>
+            <div class="alert-box alert-box--success hideit" id="commentAlert" style="display:none">
+                <p>Yorum yapma işlemi başarılı. Yönetici onayından sonra herkese açık hale gelecektir.</p>
+                <i class="fa fa-times alert-box__close" aria-hidden="true"></i>
+            </div><!-- end success -->
+            <button class="btn btn--primary btn-wide btn--large full-width">YORUM YAP</button>
+
+
+        </fieldset>
+    </form> <!-- end form -->
+
+</div>
+<!-- END respond-->

@@ -1,0 +1,100 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Files
+@{
+    ViewBag.Title = "Dosya Yükle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">GÖRSEL YÜKLEME</span>
+    </div>
+    <br />
+
+
+    <div class="masonry-wrap">
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <div class="form-field">
+                    <span>Görsel Başlığı</span>
+                    @Html.TextBoxFor(x => x.fileTitle, new { @class = "full-width", @required = "required" })
+                </div>
+                <div class="form-field">
+                    <span>Blog Görsel</span>
+                    <input type="file" id="inputFile" name="uploadFile" required class="full-width" accept="image/*" />
+                </div>
+                <div class="gorsel">
+                    @*Bu alana seçilen fotoğrafın önizlemesi getilir.*@
+                </div>
+                <input type="submit" id="addImage" value="GÖRSEL YÜKLE" class="btn btn--primary btn-wide btn--large full-width">
+            </fieldset>
+        </form>
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+
+
+    $("#addImage").prop("disabled", true);
+    $(document).ready(function () {
+
+
+
+        $("#inputFile").change(function () {
+
+            var fileName = document.getElementById("inputFile").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                var sayi = $("#inputFile").get(0).files.length;
+                $(".gorsel").empty();
+                if (sayi > 1) {
+                    $("#addImage").prop("disabled", true);
+                    alert("En Fazla 25 Fotoğraf Yükleyebilirsiniz");
+                }
+                else if (sayi < 1) {
+                    $("#addImage").prop("disabled", true);
+                    alert("Lütfen Bir Fotoğraf Seçiniz");
+                }
+                else {
+                    $("#addImage ").prop("disabled", false);
+                    for (var i = 0; i < sayi; i++) {
+                        var file = document.getElementById("inputFile").files[i];
+                        var readImg = new FileReader();
+                        readImg.readAsDataURL(file);
+                        readImg.onload = function (e) {
+                            var resimadi = "resim" + i;
+                            $(".gorsel").append("<img id=" + resimadi + "style='text-align:center' " + " src=" + e.target.result + " width='250' height='150' />" + " ");
+
+                        }
+                    }
+                }
+            } else {
+                fileName.value = null;
+                alert("Sadece görsel dosyalar yüklenebilir.");
+            }
+
+            
+        });
+    });
+</script>
+
+<style>
+    input[type=file]::file-selector-button {
+        margin-right: 20px;
+        border: 1px solid #084cdf !important;
+        background: #084cdf !important;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #fff !important;
+        cursor: pointer;
+        transition: background .2s ease-in-out !important;
+    }
+
+        input[type=file]::file-selector-button:hover {
+            background: #0d45a5 !important;
+        }
+</style>

@@ -1,0 +1,61 @@
+﻿@using BlogSharingSite.Models.Entity
+@model List<TBL_Comments>
+
+<div id="comments" class="column large-12">
+    <h3 class="h2">Yorumlar</h3>
+
+
+    <!-- START commentlist -->
+    <ol class="commentlist">
+        @if (Model.Count <= 0)
+        {
+
+
+            <div class="alert-box alert-box--info hideit">
+                <p>Bu bloğa henüz hiç yorum yapılmamış.</p>
+            </div><!-- end info -->
+
+
+        }
+        else
+        {
+            foreach (var x in Model)
+            {
+                <li class="depth-1 comment">
+
+                    <div class="comment__avatar">
+                        <img class="avatar" src="~/blog/images/avatars/comment.png" alt="" style="border-radius:0">
+                    </div>
+
+                    <div class="comment__content">
+
+                        <div class="comment__info">
+                            <div class="comment__author">@x.commentUserName</div>
+
+                            <div class="comment__meta">
+                                <div class="comment__time">@x.commentDate</div>
+                            </div>
+                        </div>
+
+                        <div class="comment__text">
+                            <p>
+                                @x.commentContent
+                            </p>
+                        </div>
+
+                    </div>
+
+                </li>
+                <!-- end comment level 1 -->
+            }
+        }
+
+
+
+
+
+
+    </ol>
+    <!-- END commentlist -->
+
+</div> <!-- end comments -->

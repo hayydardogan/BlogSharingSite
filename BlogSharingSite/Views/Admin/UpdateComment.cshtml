@@ -1,0 +1,49 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_Comments
+@{
+    ViewBag.Title = "Yorum Bilgisi Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">YORUM GÜNCELLE</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <form method="post">
+            <fieldset>
+                <div class="form-field">
+                    @Html.TextBoxFor(m => m.commentID, new { @class = "full-width", style = "display:none;" })
+                </div>
+                <div class="form-field">
+                    <span>Yorum Sahibi</span>
+                    @Html.TextBoxFor(m => m.commentUserName, new { @class = "full-width", placeholder = "Yorum sahibi", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Mail Adresi</span>
+                    @Html.TextBoxFor(m => m.commentUserMail, new { @class = "full-width", placeholder = "Mail adresi", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Yorum İçeriği</span>
+                    @Html.TextBoxFor(m => m.commentContent, new { @class = "full-width", placeholder = "Yorum içeriği", @required = "required", @maxlength = "150" })
+                </div>
+                <div class="form-field">
+                    <span>Tarih</span>
+                    @Html.TextBoxFor(m => m.commentDate, new { @class = "full-width", placeholder = "Yorum Tarihi", @required = "required", @maxlength = "50" })
+                </div>
+                <div class="form-field">
+                    <span>Blog Adı</span>
+                    @Html.TextBoxFor(m => m.TBL_Blogs.blogTitle, new { @class = "full-width" , @readonly="readonly"})
+                </div>
+                <button class="btn btn--primary btn-wide btn--large full-width">YORUMU GÜNCELLE</button>
+
+
+            </fieldset>
+        </form>
+    </div>
+
+</div>
+

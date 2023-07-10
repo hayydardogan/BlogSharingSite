@@ -1,0 +1,40 @@
+﻿@model BlogSharingSite.Models.Entity.TBL_AdminInfo
+@{
+    ViewBag.Title = "Hesap Ayarları";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="s-content">
+
+    <div style="margin-left:20px">
+        <span class="" style="font-weight:bold; border:1px solid; padding:10px 25px">HESAP AYARLARI</span>
+    </div>
+    <br />
+    <div class="masonry-wrap">
+        <form method="post">
+            <fieldset>
+                <div class="form-field">
+                    @Html.TextBoxFor(m => m.adminID, new { @class = "full-width", style = "display:none;" })
+                </div>
+                <div class="form-field">
+                    <span>Kullanıcı Adı</span>
+                    @Html.TextBoxFor(m => m.adminUserName, new { @class = "full-width", placeholder = "Kullanıcı adı", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Mail Adresi</span>
+                    @Html.TextBoxFor(m => m.adminMail, new { @class = "full-width", placeholder = "Mail adresi", @required = "required", @maxlength = "50" })
+                </div>
+
+                <div class="form-field">
+                    <span>Şifre</span>
+                    @Html.TextBoxFor(m => m.adminPassword, new { @class = "full-width", placeholder = "Şifre", @required = "required", @maxlength = "50" })
+                </div>
+                <button class="btn btn--primary btn-wide btn--large full-width">BİLGİLERİ GÜNCELLE</button>
+
+
+            </fieldset>
+        </form>
+    </div>
+
+</div>
